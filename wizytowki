@@ -1,0 +1,79 @@
+from faker import Faker
+fake = Faker()
+
+class Card:
+    def __init__(self, name, surname, company, position, email):
+        self.name = name
+        self.surname = surname
+        self.company = company
+        self.position = position
+        self.email = email
+        # Variables
+        self._letters_count= len(self.name) 
+    def __str__(self):
+        return f'{self.name} {self.surname} {self.email}'
+    def __gt__(self, other):
+        return self.name > other.name
+    def contact(self):
+        return f'Kontaktuje się z {self.name} {self.surname} {self.email} {self._letters_count}'
+    @property
+    def letters_count(self):
+        return len(self.name)
+    @letters_count.setter
+    def letters_count(self, fn_length):
+        fn_length = len(self.name)
+        return self._letters_count
+
+class BaseContact(Card):
+    def __init__(self, phone,*args, **kwargs):
+       super().__init__(*args, **kwargs)
+       self.phone = phone
+    def __str__(self):
+        return f' name : {self.name} , phone :  {self.phone} , email : {self.email}'
+    def contact(self):
+        return f'Wybieram numer {self.phone} i kontaktuje sie z {self.name} {self.surname} '
+
+class BusinessContact(Card):
+    def __init__(self, phone, bphone, *args, **kwargs):
+       super().__init__(*args, **kwargs)
+       self.phone = phone
+       self.bphone = bphone
+    def __str__(self):
+        return f' name : {self.name} , phone :  {self.phone} ,  email : {self.email} ,  position: {self.position} , company: {self.company} , business phone: {self.bphone}'
+    def contact(self):
+        return f'Wybieram numer {self.bphone} i kontaktuje sie z {self.name} {self.surname} '
+    
+
+helbrecht = Card(name = "Maciej", surname = "Helbrecht", company = "ipint", position="CEO", email="m.helbrecht@ipint.pl")
+wozniak = Card(name="Malwina", surname="Wozniak", company="Ulbrich's", position="Independent adjuster", email="MalwinaWozniak@jourrapide.com")
+kwiatkowska = Card(name="Czesława", surname="Kwiatkowska", company="Merry-Go-Round", position="Multiple machine tool tender", email="CzeslawaKwiatkowska@armyspy.com")
+adamski = Card(name="Maciej", surname="Adamski", company="Solution Realty", position="szef wszystkich szefow", email="MaciejAdamski@teleworm.us")
+kozlowski = Card(name="Andrzej", surname="Kozlowski", company="Gamma Gas", position="Paper coating machine operator", email="AndrzejKozlowski@rhyta.com")
+
+card_list = [helbrecht, wozniak, kwiatkowska, adamski, kozlowski]
+by_name = sorted(card_list, key=lambda card: card.name)
+by_surname = sorted(card_list, key=lambda card: card.surname)
+by_email = sorted(card_list, key=lambda card: card.email)
+
+
+
+for people in by_name:
+    print(people)
+
+for people in by_surname:
+    print(people)
+
+for people in by_email:
+    print(people)
+
+print(Card.contact(helbrecht))
+
+helbrecht = BusinessContact(name = "Maciej", surname = "Helbrecht", company = "ipint", position="CEO", email="m.helbrecht@ipint.pl", phone="608", bphone="666")
+
+
+print(BusinessContact.contact(helbrecht))
+
+helbrecht = BaseContact(name = "Maciej", surname = "Helbrecht", company = "ipint", position="CEO", email="m.helbrecht@ipint.pl", phone="608")
+
+print(BaseContact.contact(helbrecht))
+
